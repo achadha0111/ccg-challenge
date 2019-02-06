@@ -6,7 +6,7 @@ def writeDataToFile(imageData, directory, description):
     if not path.exists(directory):
         makedirs(directory)
 
-    # TODO Optimise this
+    # TODO Optimise this (?)
 
     for idx, file in enumerate(imageData):
         fileName = "{0}_{1}.png".format(description, idx)
