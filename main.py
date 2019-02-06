@@ -1,19 +1,43 @@
 from utils import LoadRawImageData, DiskWriteUtil, TransformImages, Noisy
+import argparse
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-# TODO Add argparser to allow command line execution
+# DONE Add argparser to allow command line execution
+parser = argparse.ArgumentParser()
 
-unzipped = LoadRawImageData.uncompressFile("data_pipeline/train-images-idx3-ubyte.gz")
+parser.add_argument("--processes", default=2, help="Specify number of processes to use for image processing")
 
-images = LoadRawImageData.extractRawData(unzipped)
+parser.add_argument("--verbose", action="store_true", help="Output pipeline status to standard output")
 
-#DiskWriteUtil.writeDataToFile(images, "rawImages", "raw")
+# TODO setup argument parsing to allow provision of paths instead of having them hardcoded
+# parser.add_argument("--images")
 
-transformedImages = TransformImages.applyTransformations(images, 2)
-
-DiskWriteUtil.writeDataToFile(transformedImages, "transformedImages", "transformed")
-
-noisyImages = Noisy.createNoisyImage(transformedImages, 2)
-
-DiskWriteUtil.writeDataToFile(transformedImages, "noisyImages", "transformedNoisy")
+args = parser.parse_args()
 
 
+def main():
+
+    logger.info("Uncompressing file")
+    unzipped = LoadRawImageData.uncompressFile("data_pipeline/train-images-idx3-ubyte.gz")
+
+    logger.info("Extracting raw data")
+    images = LoadRawImageData.extractRawData(unzipped)
+
+    logger.info("Applying transformations")
+    transformedImages = TransformImages.applyTransformations(images[:20, :, :], int(args.processes))
+
+    logger.info("Writing transformed images to the directory transformedImages")
+    DiskWriteUtil.writeDataToFile(transformedImages, "transformedImages", "transformed")
+
+    logger.info("Adding noise to images")
+    noisyImages = Noisy.createNoisyImage(transformedImages, int(args.processes))
+
+    logger.info("Saving noisy images to the directory noisyImages")
+    DiskWriteUtil.writeDataToFile(noisyImages, "noisyImages", "transformedNoisy")
+
+    logger.info("Images saved. Goodbye!")
+
+if __name__ == "__main__":
+    main()
