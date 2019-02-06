@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 from multiprocessing import Pool
-from .DiskWriteUtil import writeDataToFile
 
 
 def rotateImage(image):
@@ -42,6 +41,7 @@ def getRandomTransformationValue(start, end, unit):
 def applyTransformations(imageData, numProcesses):
     # combinedTransformation = composeTransformations(rotateImage, translateImage)
 
+    # TODO Pool doesn't preserve order, images written to disk would not be linked
     with Pool(numProcesses) as p:
         # Not entirely happy with this block of code, alas, lambda functions aren't pickleable
         translatedImages = p.map(translateImage, imageData)
