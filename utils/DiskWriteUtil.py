@@ -10,4 +10,4 @@ def writeDataToFile(imageData, directory, description):
 
     for idx, file in enumerate(imageData):
         fileName = "{0}_{1}.png".format(description, idx)
-        imageio.imwrite(path.join(description, fileName), file)
+        imageio.imwrite(path.join(directory, fileName), file)
