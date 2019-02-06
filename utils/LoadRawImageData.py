@@ -21,7 +21,10 @@ def uncompressFile(filepath):
 :input File path to the uncompressed file
 :returns Uncompressed Image Data
 
+Taken from - https://medium.com/@mannasiladittya/converting-mnist-data-in-idx-format-to-python-numpy-array-5cb9126f99f1
+
 '''
+
 
 
 def extractRawData(uncompressedFile):
