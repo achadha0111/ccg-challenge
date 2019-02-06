@@ -9,8 +9,5 @@ class DataExtractionTests(unittest.TestCase):
     def testExtractRawData(self):
         pass
 
-    def testWriteToFile(self):
-        pass
-
 
 
