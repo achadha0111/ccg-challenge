@@ -1,8 +1,6 @@
 import gzip
 import numpy as np
 import struct as st
-from os import path, makedirs
-import imageio
 
 '''
 :input File path to the compressed file
@@ -44,17 +42,4 @@ def extractRawData(uncompressedFile):
 
     return imageArray
 
-
-def writeDataToFile(imageData):
-
-    uncompressedImagePath = "uncompressedImages"
-
-    if not path.exists(uncompressedImagePath):
-        makedirs(uncompressedImagePath)
-
-    # TODO Optimise this
-
-    for idx, file in enumerate(imageData):
-        fileName = "noiseless_{0}.png".format(idx)
-        imageio.imwrite(path.join(uncompressedImagePath, fileName), file)
 
