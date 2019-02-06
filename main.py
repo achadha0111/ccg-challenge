@@ -26,7 +26,7 @@ def main():
     images = LoadRawImageData.extractRawData(unzipped)
 
     logger.info("Applying transformations")
-    transformedImages = TransformImages.applyTransformations(images[:20, :, :], int(args.processes))
+    transformedImages = TransformImages.applyTransformations(images, int(args.processes))
 
     logger.info("Writing transformed images to the directory transformedImages")
     DiskWriteUtil.writeDataToFile(transformedImages, "transformedImages", "transformed")
