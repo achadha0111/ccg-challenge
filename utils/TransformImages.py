@@ -5,19 +5,20 @@ from .DiskWriteUtil import writeDataToFile
 
 
 def rotateImage(image):
-
+    image = image.astype(np.uint8)
     rows, cols = image.shape
 
     rotationAngle = getRandomTransformationValue(-100, 100, "degree")
 
     # Rotate pixels
-    M = cv2.getRotationMatrix2D((cols/2, rows/2), rotationAngle)
+    M = cv2.getRotationMatrix2D((cols/2, rows/2), rotationAngle, 1)
     rotatedImage = cv2.warpAffine(image, M, (cols, rows))
 
     return rotatedImage
 
 
 def translateImage(image):
+    image = image.astype(np.uint8)
     rows, cols = image.shape
 
     # Get translation values
@@ -38,16 +39,13 @@ def getRandomTransformationValue(start, end, unit):
         return (1/100)*np.random.uniform(start, end+1)
 
 
-# Composer function to use with processes
-def composeTransformations(rotation, translation):
-    return lambda x: rotation(translation(x))
-
-
 def applyTransformations(imageData, numProcesses):
-    combinedTransformation = composeTransformations(rotateImage, translateImage)
+    # combinedTransformation = composeTransformations(rotateImage, translateImage)
 
     with Pool(numProcesses) as p:
-        transformedImages = p.map(combinedTransformation, imageData)
+        # Not entirely happy with this block of code, alas, lambda functions aren't pickleable
+        translatedImages = p.map(translateImage, imageData)
+        transformedImages = p.map(rotateImage, translatedImages)
 
     return transformedImages
 
