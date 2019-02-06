@@ -8,6 +8,16 @@ import numpy as np
 from multiprocessing import Pool
 from random import randint
 
+"""
+Adds gaussian noise to an image
+
+Args:
+    image: A numpy array representation of the image
+
+Returns:
+    An image with Gaussian Noise.
+
+"""
 
 def addGaussianNoise(image):
 
@@ -23,12 +33,41 @@ def addGaussianNoise(image):
     return noisyImage
 
 
+"""
+
+Adds noise sampled from a Poisson distribution to an image
+
+Args:
+    image: A numpy array representation of the image
+
+Returns:
+    An image with Poisson Noise.
+
+"""
+
+
 def addPoissonNoise(image):
 
     vals = len(np.unique(image))
     vals = 2 ** np.ceil(np.log2(vals))
     noisy = np.random.poisson(image * vals) / float(vals)
     return noisy
+
+
+"""
+
+Randomly chooses one of the two noise distributions to use and applies that to the image.
+Also maps processes (user specified) to the images to achieve concurrent execution.
+
+Args:
+    image: A numpy array representation of the image
+    numProcesses: Number of processes to use, default is 2
+
+Returns:
+    A numpy array containing images with added noise
+
+"""
+
 
 def createNoisyImage(imageData, numProcesses):
 

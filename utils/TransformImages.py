@@ -2,7 +2,16 @@ import cv2
 import numpy as np
 from multiprocessing import Pool
 
+"""
+Rotate Image
 
+Args:
+    image: A numpy array representation of the image
+
+Returns:
+   Image rotated by an angle between -100 to 100 degree (sampled from a uniform distribution) with respect to the center.
+
+"""
 def rotateImage(image):
     image = image.astype(np.uint8)
     rows, cols = image.shape
@@ -14,6 +23,18 @@ def rotateImage(image):
     rotatedImage = cv2.warpAffine(image, M, (cols, rows))
 
     return rotatedImage
+
+
+"""
+Translate Image
+
+Args:
+    image: A numpy array representation of the image
+
+Returns:
+   Image translated along both the axes by a percentage between -40 to 40 degree (sampled from a uniform distribution)
+
+"""
 
 
 def translateImage(image):
@@ -31,11 +52,38 @@ def translateImage(image):
     return translatedImage
 
 
+"""
+Return random transformation value to use
+
+Args:
+    start: start of range
+    end: end of range
+    unit: "%" or "degree" to differentiate between rotation and translation
+
+Returns:
+   A value (scaled appropriately) for carrying out the transformation
+
+"""
+
+
 def getRandomTransformationValue(start, end, unit):
     if unit == "degree":
         return np.random.uniform(start, end+1)
     elif unit == "%":
         return (1/100)*np.random.uniform(start, end+1)
+
+
+"""
+Applies transformations to a numpy array of images
+
+Args:
+    imageData: Numpy array containing images
+    numProcesses: Processes to use for concurrent execution
+
+Returns:
+   A numpy array containing transformed images
+
+"""
 
 
 def applyTransformations(imageData, numProcesses):

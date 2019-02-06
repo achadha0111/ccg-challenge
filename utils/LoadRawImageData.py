@@ -8,21 +8,35 @@ import struct as st
 
 '''
 
+"""
+Decompresses file using gunzip
+
+Args:
+    filepath: File path to the compressed file
+
+Returns:
+   Reference to the file
+   
+"""
+
 
 def uncompressFile(filepath):
     f = gzip.open(filepath, 'rb')
     return f
 
 
-'''
+"""
+Extracts Raw Data
 
-:input File path to the uncompressed file
-:returns Uncompressed Image Data
+Args:
+    uncompressedFile: File path to the uncompressed file
 
+Returns:
+   Uncompressed Image Data
+   
 Taken from - https://medium.com/@mannasiladittya/converting-mnist-data-in-idx-format-to-python-numpy-array-5cb9126f99f1
 
-'''
-
+"""
 
 
 def extractRawData(uncompressedFile):
